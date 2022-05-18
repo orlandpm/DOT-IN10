@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icon" rel="stylesheet">
+     
+    
+    
+    <title>Document</title>
+    <style>
+      
+     
+    </style> 
+</head>
+<body>
+  <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-bold is-size-4" href="{{url_for('feed')}}">DOT-IN</a>
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{{url_for('feed')}}">
+          <i class="fas fa-house-user "></i><strong>Messages</strong> 
+        </a>
+  
+        <a class="navbar-item" href="{{url_for('accept_friend')}}">
+          <i class="fas fa-user-group "></i><strong>Friend</strong>{{1}}
+        </a>
+        <a class="navbar-item" href="{{url_for('friend_request')}}">
+          <span class="material-icon"></span>
+          <span class="icon-button__badge">{{2}}</span>
+          <strong>Friend Request</strong>
+        </a>
+        <a class="navbar-item" href="{{url_for('profile', user=user['Name'])}}">
+          <i class="fas fa-user "></i><strong>{{user['User']}}</strong>
+        </a>
+      </div>
+  
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+          
+            <a class="button is-light" href="{{url_for('logout')}}">
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+{% for message in messages %}
+  <div class="box post-box"  >
+    <article class="media">
+     <div class="row-1">
+      <div class="media-left">
+        <figure class="image is-64x64">
+          
+          {% if current_user.profile_pic %}
+
+          <img src="{{url_for('static', filename=post['User']+'.jpg') }}" alt="Image">
+
+          {% else %}
+
+          <img src="{{url_for('static', filename='default_profile_pic.png')}}" alt="Image">
+           
+          {% endif %}
+        </figure>
+      </div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="{{url_for('profile', user=message['User'])}}">
+               <strong>{{message['Name']}}</strong> <small>@{{message['User']}}</small>
+              </a>
+              
+            <small></small> 
+            <br>
+            {{message['Texts']}}
+            </p>
+        </div>
+        
+      </div>
+
+     </div>
+
+     <div clas="row-2">  
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <a href="{{url_for('profile', user=message['User'])}}">
+               <strong>{{message['Name']}}</strong> <small>@{{message['User']}}</small>
+              </a>
+              
+            <small></small> 
+            <br>
+            {{message['Texts']}}
+            </p>
+        </div>
+        
+      </div>
+      <div class="media-left">
+        <figure class="image is-64x64">
+          
+          {% if current_user.profile_pic %}
+
+          <img src="{{url_for('static', filename=post['User']+'.jpg') }}" alt="Image">
+
+          {% else %}
+
+          <img src="{{url_for('static', filename='default_profile_pic.png')}}" alt="Image">
+           
+          {% endif %}
+        </figure>
+      </div>
+       
+     </div>
+{% endfor %}
+     <form action="/create_message" method="POST">
+      <div class="field">
+        <div class="control">
+          <textarea class="textarea" name="message-content" placeholder="New Message" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link">Send</button>
+      </div>
+     </div>
+    </form>
+    </article>
+ 
+  </div>
+ </body>
+ </html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DOT-IN My Feed</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"> 
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icon" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css"> 
+    
+  </head>
+  <body>
+    <script defer src="https://use.fontawesome.com/releases/6.1.1/js/all.js"></script> 
+
+    <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item has-text-weight-bold is-size-4" href="{{url_for('feed')}}">DOT-IN</a>
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="{{url_for('feed')}}">
+              <i class="fas fa-house-user "></i><strong>My Feed</strong> 
+            </a>
+      
+            <a class="navbar-item" href="{{url_for('accept_friend')}}">
+              <i class="fas fa-user-group "></i><strong>friend</strong>{{1}}
+            </a>
+            <a class="navbar-item" href="{{url_for('friend_request')}}">
+              <span class="material-icon"></span>
+              <span class="icon-button__badge">{{2}}</span>
+              <strong>friend Request</strong>
+            </a>
+            <a class="navbar-item" href="{{url_for('profile', user=user['Name'])}}">
+              <i class="fas fa-user "></i><strong>{{user['User']}}</strong>
+            </a>
+          </div>
+      
+      
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+              
+                <a class="button is-light" href="{{url_for('logout')}}">
+                  Log out
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+  <section class="section">
+    <div class="container">
+        <h1 class='title'>
+         {{ title }}
+        </h1>
+    
+
+   {% block content %}
+
+   {% endblock %}
+  </div>
+</section>
+<script 
+src="https://code.jquery.com/jquery-3.6.0.min.js" 
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+crossorigin="anonymous"></script>
+<script>
+ // function like(post_id){
+
+  $('.comment-button').click(function() {
+    var post_id = parseInt($(this).closest('.post-box').attr('data-postid'));
+    var $comments = $(this).closest('.post-box').find('.comments').append(data);
+    $.ajax({
+        url: '/api/comments/' + post_id
+    }).done(function(data) {
+      var comments = JSON.parse(data);
+      $comments.html('');
+      if(comments.length == 0){
+        $comments.append('<li>No comments yet<li>');
+      } 
+      for (var i = 0; i < comments.length; i++){
+        var user = comments[i]['User'];
+        var text = comments[i]['Text'];
+        $comments.append('<li><b>${user}:</b>${text}<li>');
+      }
+     
+    })
+    .fail(function() {
+      alert("failed to get comment");
+    }); 
+  });
+
+  $('.button1').click(function(){
+    $('.button1').text('Friend Request Sent');
+    $('.button1').css('background-color','#4E4F50');
+    $('.button2').show().css('background-color','#4E4F50');
+   });
+
+   $('.button2').click(function(){
+     $('.button2').hide();
+     $('.button1').text('Add Friend').css('background-color','#4294FF');
+   });
+
+  $('.like-button').click(function() {
+    var post_id = parseInt($(this).closest('.post-box').attr('data-postid'));
+  
+    // alert('like button clicked! post id was' + post_id);
+    var $link = $(this); 
+    $.ajax({
+      url: '/likes/' + post_id
+    }).done(function(data) {
+      var like_info = JSON.parse(data);
+      var like_count = like_info['like_count'];
+      var action = like_info['action'];
+      console.log(like_info);
+      console.log(action);
+      if(action === 'like'){
+        $link.find('.fa-heart').removeClass('far');
+        $link.find('.fa-heart').addClass('fas');
+      }
+      else{
+        $link.find('.fa-heart').removeClass('fas');
+        $link.find('.fa-heart').addClass('far');
+      }
+      $link.find('.like-count').text(like_count);
+    })
+    .fail(function() {
+      alert("error");
+    })
+  }); 
+ </script>
+
+  </body>
+</html>

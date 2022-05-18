@@ -1,0 +1,32 @@
+{% extends 'splash.html' %}
+
+{% block content %} 
+<h1><strong>Signup For DOT-IN</strong></h1>
+<form method="POST" action="{{url_for('signup')}}">
+    <table>
+    {% for field in form %}
+        <tr>
+            <th>{{ field.label }}</th>
+            <th>{{ field }}</th> 
+        </tr> 
+    {% endfor %}
+    </table> 
+</form> 
+<!-- <dev class="signup-box20">
+    <h1>Sign up</h1>
+    <form method="POST" action="{{url_for('signup')}}">
+        <p>Username</p>
+        <input type="text" name="Username" placeholder="Enter Username" required>
+        <p>Name</p>
+        <input type="text" name="Name"  placeholder="Enter Name" required>
+        <p>Bio</p>
+        <input type="text" name="Bio" placeholder="Enter Bio" required>
+        <p>Age</p>
+        <input type="int" name="Age" placeholder="Enter Age" required>
+        <p>Password</p>
+        <input id="psswrd1" type="Password" name="Name" placeholder="Enter Password" required>
+        <p id="errormessage"></p>
+        <input type="Submit"  value="Submit" >
+    </form>
+</dev>  -->  
+{% endblock %}

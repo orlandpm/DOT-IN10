@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icon" rel="stylesheet">
+     
+    <!-- <link rel="stylesheet" href="static/style.css">  -->
+    <style>
+      .search-box{
+        position: absolute;
+        top: 17%;
+        left: 50%;
+        transform: translate(-50%,-50%); 
+        background: #2f3640;
+        height: 60px;
+        border-radius: 40px;
+        padding: 10px;
+     }
+
+    
+
+     .search-box:hover > .search-txt{
+         width: 240px;
+         padding: 0 6px;
+          
+     }
+     
+     .search-box:hover > .search-bnt{
+         background: rgb(250, 247, 247);
+         
+     }
+
+     input.search-txt{
+       background-color: orange;
+     }
+     i.fas.fa-search{
+       top: 30px;
+
+     }
+     
+     .search-bnt{
+        color:  #e84118;
+        float: right;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ecedf0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.4s;
+     }
+     .search-txt{
+         border: none;
+         border: none;
+         outline: none;
+         float: left;
+         padding: 0;
+         color: rgb(18, 17, 17);   
+         font-size: 16px;
+         transition: 0.4s;
+         line-height: 40px;
+         width: 0px;
+     }
+    </style>
+               
+    <title>Friends</title>
+    
+  
+
+</head>
+<body>
+  <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-bold is-size-4" href="{{url_for('feed')}}">DOT-IN</a>
+      </a>
+  
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{{url_for('feed')}}">
+          <i class="fas fa-house-user "></i><strong>My Feed</strong> 
+        </a>
+  
+        <a class="navbar-item" href="{{url_for('accept_friend')}}">
+          <i class="fas fa-user-group "></i><strong>Friend</strong>{{1}}
+        </a>
+        <a class="navbar-item" href="{{url_for('friend_request')}}">
+          <span class="material-icon"></span>
+          <span class="icon-button__badge">{{2}}</span>
+          <strong>Friend Request</strong>
+        </a>
+        <a class="navbar-item" href="{{url_for('profile', user=user['Name'])}}">
+          <i class="fas fa-user "></i><strong>{{user['User']}}</strong>
+        </a>
+      </div>
+  
+  
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+          
+            <a class="button is-light" href="{{url_for('logout')}}">
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="search-box">
+    <input class="search-txt" type="text" name="" placeholder="Type to search">
+    <a class="search-btn" href="#">
+    <i class="fas fa-search"></i> 
+    </a>
+  </div>
+
+  <section class="section">   
+{% for friend in friends  %}
+<div class="box">
+    <article class="media">
+      <div class="media-left">
+        <figure class="image is-64x64">
+          
+          {% if current_user.profile_pic %}
+
+          <img src="{{url_for('static', filename=post['User']+'.jpg') }}" alt="Image">
+
+          {% else %}
+
+          <img src="{{url_for('static', filename='default_profile_pic.png')}}" alt="Image">
+           
+          {% endif %}
+        </figure>
+      </div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+             <a href="{{url_for('profile',user=friend['User'])}}">
+             <strong>{{friend["Name"]}}</strong> 
+             <small>@{{friend["User"]}}</small>
+             
+             <br>
+                
+            </p>
+        </div>
+     
+      </div>
+    </article>
+  </div>
+  {% endfor %}
+</section>
+</body>
+</html>
